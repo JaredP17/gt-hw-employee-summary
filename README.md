@@ -38,7 +38,7 @@ Clone repo, install dependecies, run `node app.js`, and follow the prompts.
 
 ## Demo
 
-Click here to view demo: [video]()
+Click here to view demo: [video](https://drive.google.com/file/d/1f9BQzq0ZqvucleKm3YaeisW55dxo_xPF/view)
 
 ## License
 
