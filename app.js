@@ -9,8 +9,19 @@ const questions = require("./lib/questions");
 const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 const employees = [];
-
 const render = require("./lib/htmlRenderer");
+
+const writeToFile = (path, data) => {
+    return new Promise(function (resolve, reject) {
+      fs.writeFile(path, data, (err) => {
+        if (err) {
+          return reject(err);
+        }
+  
+        resolve("Success!");
+      });
+    });
+  }
 
 const addMember = () => {
   inquirer
@@ -34,9 +45,14 @@ const addMember = () => {
           inquirer
             .prompt(questions.engineerQuestions)
             .then((data) => {
-                const {name, id, email, github} = data;
-                const engineer = new Engineer(name.trim(), id.trim(), email.trim(), github.trim());
-                employees.push(engineer);
+              const { name, id, email, github } = data;
+              const engineer = new Engineer(
+                name.trim(),
+                id.trim(),
+                email.trim(),
+                github.trim()
+              );
+              employees.push(engineer);
             })
             .then(() => {
               addMember(); // Prompt for more users.
@@ -50,9 +66,14 @@ const addMember = () => {
           inquirer
             .prompt(questions.internQuestions)
             .then((data) => {
-                const {name, id, email, school} = data;
-                const intern = new Intern(name.trim(), id.trim(), email.trim(), school.trim());
-                employees.push(intern);
+              const { name, id, email, school } = data;
+              const intern = new Intern(
+                name.trim(),
+                id.trim(),
+                email.trim(),
+                school.trim()
+              );
+              employees.push(intern);
             })
             .then(() => {
               addMember(); // Prompt for more users.
@@ -63,7 +84,8 @@ const addMember = () => {
           break;
 
         default:
-            console.log(employees);
+          //   console.log(employees);
+          writeToFile(outputPath, render(employees));
           break;
       }
     })
@@ -79,8 +101,13 @@ console.log("Please build your team.");
 inquirer
   .prompt(questions.managerQuestions)
   .then((data) => {
-    const {name, id, email, office} = data;
-    const manager = new Manager(name.trim(), id.trim(), email.trim(), office.trim());
+    const { name, id, email, office } = data;
+    const manager = new Manager(
+      name.trim(),
+      id.trim(),
+      email.trim(),
+      office.trim()
+    );
     employees.push(manager);
   })
   .then(() => {
