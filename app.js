@@ -8,6 +8,7 @@ const questions = require("./lib/questions");
 
 const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
+const employees = [];
 
 const render = require("./lib/htmlRenderer");
 
@@ -27,21 +28,47 @@ const addMember = () => {
       },
     ])
     .then(({ addMember: choice }) => {
-    //   console.log(choice);
+      //   console.log(choice);
       switch (choice) {
         case "Engineer":
-          console.log("Engineer");
-          addMember();
+          inquirer
+            .prompt(questions.engineerQuestions)
+            .then((data) => {
+                const {name, id, email, github} = data;
+                const engineer = new Engineer(name.trim(), id.trim(), email.trim(), github.trim());
+                employees.push(engineer);
+            })
+            .then(() => {
+              addMember(); // Prompt for more users.
+            })
+            .catch((err) => {
+              console.log(err);
+            });
           break;
 
         case "Intern":
-          console.log("Intern");
-          addMember();
+          inquirer
+            .prompt(questions.internQuestions)
+            .then((data) => {
+                const {name, id, email, school} = data;
+                const intern = new Intern(name.trim(), id.trim(), email.trim(), school.trim());
+                employees.push(intern);
+            })
+            .then(() => {
+              addMember(); // Prompt for more users.
+            })
+            .catch((err) => {
+              console.log(err);
+            });
           break;
 
         default:
+            console.log(employees);
           break;
       }
+    })
+    .catch((err) => {
+      console.log(err);
     });
 };
 
@@ -52,10 +79,15 @@ console.log("Please build your team.");
 inquirer
   .prompt(questions.managerQuestions)
   .then((data) => {
-    console.log(data);
+    const {name, id, email, office} = data;
+    const manager = new Manager(name.trim(), id.trim(), email.trim(), office.trim());
+    employees.push(manager);
   })
   .then(() => {
     addMember();
+  })
+  .catch((err) => {
+    console.log(err);
   });
 
 // Inquirer prompt for other employees
