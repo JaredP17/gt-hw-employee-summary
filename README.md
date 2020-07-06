@@ -12,6 +12,10 @@ A Node CLI that takes in information about employees and generates an HTML webpa
 
 * [Usage](#usage)
 
+* [Preview](#preview)
+
+* [Demo](#demo)
+
 * [License](#license)
 
 * [Contributing](#contributing)
